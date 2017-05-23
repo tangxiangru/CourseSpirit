@@ -1,5 +1,7 @@
 # coding=utf-8
 from flask import Flask, request, jsonify
+from .. import db
+from . import api
 from random import Random
 import psycopg2, hashlib
 import sys
@@ -96,16 +98,16 @@ def register():
                             cur.execute('''INSERT INTO public.teacher (id, title) VALUES (%s, %s);''', (uid, grade_or_title)    )
                             conn.commit()
                                                                     
-                                                                    ans = "0"
-                                                                else :
-                                                                    ans = "-1"
+                    ans = "0"
+            else :
+                    ans = "-1"
                                                                         
-                                                                        cur.close()
-                                                                            conn.close()
+            cur.close()
+    conn.close()
                                                                                 
-                                                                                return jsonify({
-                                                                                               'status': ans
-                                                                                               }), 200
+        return jsonify({
+                       'status': ans
+        }), 200
 
 def md5(str):
     m = hashlib.md5()
@@ -122,5 +124,3 @@ def create_salt(length = 4):
         salt += chars[random.randint(0, len_chars)]
     return salt
 
-if __name__ == '__main__':
-    app.run(host=host, port=port)
